@@ -3,17 +3,17 @@ import pytest
 from main import State
 
 
-@pytest.fixture(scope="module")
-def prefix_symbol_state():
-    symbol = 'a'
-    return State(symbol, symbol)
-
-
-@pytest.fixture(scope="module")
-def other_symbol_state():
-    symbol = 'a'
-    prefix_symbol = 'b'
-    return State(symbol, prefix_symbol)
+def pytest_assertrepr_compare(op, left, right):
+    if isinstance(left, State) and isinstance(right, State) and op == "==":
+        return [
+            "Comparing State instances:",
+            "   can_be_one_symbol_word: {} != {} or".format(left.can_be_one_symbol_word,
+                                                            right.can_be_one_symbol_word),
+            "   max_one_symbol_length: {} != {} or".format(left.max_one_symbol_length,
+                                                           right.max_one_symbol_length),
+            "   max_one_symbol_prefix: {} != {}".format(left.max_one_symbol_prefix,
+                                                        right.max_one_symbol_prefix)
+        ]
 
 
 @pytest.fixture(scope="module")

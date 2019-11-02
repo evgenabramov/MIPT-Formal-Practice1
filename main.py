@@ -74,7 +74,7 @@ def repeat(state):
     return next_state
 
 
-def max_one_symbol_prefix(regex, prefix_symbol):
+def get_final_state(regex, prefix_symbol):
     state_stack = []
 
     for regex_symbol in regex:
@@ -95,19 +95,20 @@ def max_one_symbol_prefix(regex, prefix_symbol):
                     state = state_stack.pop()
                     state_stack.append(repeat(state))
             else:
-                raise Exception('ERROR: Unexpected symbol')
+                raise Exception('ERROR: unexpected symbol')
         except IndexError:
             raise Exception('ERROR: inconsistent regular expression')
 
-    final_state = state_stack.pop()
+    if len(state_stack) > 1:
+        raise Exception('ERROR: inconsistent regular expression')
 
-    return final_state.max_one_symbol_prefix
+    return state_stack.pop()
 
 
 def check_has_prefix(regex, prefix_symbol, number):
-    max_prefix = max_one_symbol_prefix(regex, prefix_symbol)
+    final_state = get_final_state(regex, prefix_symbol)
 
-    return max_prefix >= number
+    return final_state.max_one_symbol_prefix >= number
 
 
 def main():
