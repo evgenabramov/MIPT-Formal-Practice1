@@ -85,7 +85,8 @@ def incorrect_regex_stack_not_empty():
     return "ab.c*"
 
 
-def test_correct_regex1(correct_regex1, final_state1_a, final_state1_b, final_state1_c):
+def test_correct_regex1(correct_regex1, final_state1_a, final_state1_b,
+                        final_state1_c):
     final_state_a = get_final_state(correct_regex1, 'a')
     final_state_b = get_final_state(correct_regex1, 'b')
     final_state_c = get_final_state(correct_regex1, 'c')
@@ -94,7 +95,8 @@ def test_correct_regex1(correct_regex1, final_state1_a, final_state1_b, final_st
     assert final_state_c == final_state1_c
 
 
-def test_correct_regex2(correct_regex2, final_state2_a, final_state2_b, final_state2_c):
+def test_correct_regex2(correct_regex2, final_state2_a, final_state2_b,
+                        final_state2_c):
     final_state_a = get_final_state(correct_regex2, 'a')
     final_state_b = get_final_state(correct_regex2, 'b')
     final_state_c = get_final_state(correct_regex2, 'c')

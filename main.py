@@ -21,16 +21,17 @@ class State:
             self.max_one_symbol_length = 0
 
     def __eq__(self, other):
-        if isinstance(other, State):
-            return self.can_be_one_symbol_word == other.can_be_one_symbol_word and \
-                self.max_one_symbol_length == other.max_one_symbol_length and \
-                self.max_one_symbol_prefix == other.max_one_symbol_prefix
-        return False
+        if not isinstance(other, State):
+            return False
+        return (self.can_be_one_symbol_word == other.can_be_one_symbol_word
+                and self.max_one_symbol_length == other.max_one_symbol_length
+                and self.max_one_symbol_prefix == other.max_one_symbol_prefix)
 
 
 def concatenate(left_state, right_state):
     next_state = State()
-    next_state.can_be_one_symbol_word = left_state.can_be_one_symbol_word and right_state.can_be_one_symbol_word
+    next_state.can_be_one_symbol_word = left_state.can_be_one_symbol_word \
+        and right_state.can_be_one_symbol_word
 
     if next_state.can_be_one_symbol_word:
         next_state.max_one_symbol_length = left_state.max_one_symbol_length + \
@@ -40,7 +41,9 @@ def concatenate(left_state, right_state):
 
     if left_state.can_be_one_symbol_word:
         next_state.max_one_symbol_prefix = max(
-            left_state.max_one_symbol_length + right_state.max_one_symbol_prefix, left_state.max_one_symbol_prefix)
+            left_state.max_one_symbol_length +
+            right_state.max_one_symbol_prefix,
+            left_state.max_one_symbol_prefix)
     else:
         next_state.max_one_symbol_prefix = left_state.max_one_symbol_prefix
 
@@ -49,7 +52,8 @@ def concatenate(left_state, right_state):
 
 def choice(left_state, right_state):
     next_state = State()
-    next_state.can_be_one_symbol_word = left_state.can_be_one_symbol_word or right_state.can_be_one_symbol_word
+    next_state.can_be_one_symbol_word = left_state.can_be_one_symbol_word or \
+        right_state.can_be_one_symbol_word
 
     next_state.max_one_symbol_length = max(left_state.max_one_symbol_length,
                                            right_state.max_one_symbol_length)
@@ -116,7 +120,8 @@ def main():
 
     parser.add_argument("-r", "--regex",
                         dest="regex",
-                        help="Regular expression in Reverse Polish notation (describes the language)",
+                        help="Regular expression in Reverse Polish notation \
+                            (describes the language)",
                         required=True)
 
     parser.add_argument("-x", "--symbol",

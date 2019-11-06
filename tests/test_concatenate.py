@@ -38,16 +38,15 @@ def test_one_symbol_word(one_symbol_word_state, result1):
     assert next_state == result1
 
 
-def test_one_symbol_word_long_left_prefix(one_symbol_word_state,
-                                          one_symbol_word_with_long_prefix_state,
-                                          result2):
+def test_one_symbol_word_long_left_prefix(
+        one_symbol_word_state, one_symbol_word_with_long_prefix_state,
+        result2):
     next_state = concatenate(one_symbol_word_with_long_prefix_state,
                              one_symbol_word_state)
     assert next_state == result2
 
 
-def test_not_one_symbol_word(one_symbol_word_state,
-                             few_symbols_word_state,
+def test_not_one_symbol_word(one_symbol_word_state, few_symbols_word_state,
                              result3):
     next_state = concatenate(one_symbol_word_state, few_symbols_word_state)
     assert next_state == result3
