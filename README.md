@@ -1,42 +1,44 @@
-# Практикум по регулярным выражениям
+# Practice on regular expressions
 
 [![Build Status](https://travis-ci.com/evgenabramov/MIPT-Formal-Practice1.svg?token=BTLs4oCWwqfaRL1pjb6t&branch=dev)](https://travis-ci.com/evgenabramov/MIPT-Formal-Practice1)
 [![codecov](https://codecov.io/gh/evgenabramov/MIPT-Formal-Practice1/branch/dev/graph/badge.svg?token=i777yrlJt9)](https://codecov.io/gh/evgenabramov/MIPT-Formal-Practice1)
 
-## Описаниe задачи
+> ### [Русская версия](README_ru.md)
 
-Обозначение: `α` - регулярное выражение в обратной польской записи, задающее язык `L`. `α` задано в алфавите `{a, b, c, 1, ., +, *}`.
+## Problem description
 
-Даны `α`, буква `x` и натуральное число `k`. Вывести, есть ли в языке `L` слова, содержащие префикс `x^k` (`k` символов `x` подряд).
+Designation: `α` - a regular expression in reverse Polish notation specifying the language `L`. `α` is given in the alphabet `{a, b, c, 1,., +, *}`.
 
-В случае, если входная строка не является корректным регулярным выражением в обратной польской записи, необходимо выдать сообщение `ERROR` об ошибке.
+Given `α`, letter `x` and natural number `k`. The task is to check if the language `L` contains any words with the prefix `x ^ k` (`k` `x`-characters in a row).
 
-## Решение
+In case the input string is not a correct regular expression in reverse Polish notation, an `ERROR` message should occur.
 
-Обозначим символ, по которому ведется поиск, через `x`.
-Сопоставим каждому регулярному выражению структуру `State`, которая хранит следующую информацию про язык `L`, задаваемый регулярным выражением `α`:
+## Solution
 
-1. Есть ли в `L` слово, содержащее только символы `x`
+Let's denote the character being searched by `x`.
+Also let's assign to each regular expression the structure `State`, which stores the following information about the language `L`, given by the regular expression `α`:
 
-2. Наибольшая длина слова из `L`, содержащего только символы `x`
+1. Does `L` contain a word consisted only of `x`-characters
 
-3. Длина наибольшего префикса, содержащего только символы `x`, среди слов из `L`
+2. Maximum length of a word from `L` containing only `x`-characters
 
-Отметим, что эти величины независимы, то есть для одного и того же регулярного выражения их значения могут соответствовать разным словам из `L`.
+3. Length of longest prefix containing only `x` characters among words from `L`
 
-Решим задачу с помощью динамического программирования.
+Note that these values are independent, that is, for the same regular expression, their values can correspond to different words from `L`.
 
-Будем посимвольно читать регулярное выражение. Поскольку парсится выражение в обратной польской нотации, то для восстановления операндов, к которым применяется очередная операция, удобно пользоваться стеком с хранением текущих состояний. Тогда последняя операция применяется к последним двум значениям на стеке.
+Let's solve the problem using dynamic programming.
 
-При этом, при чтении *буквы* в стек всегда добавляется новое состояние, которое однозначно определяется исходя из того, равен ли он `x` или нет. При чтении *операции* два верхних состояния на стеке заменяются на одно общее.
+Let's read the regular expression character by character. Since the expression is parsed in reverse Polish notation, it is convenient to use the stack with the current states to restore the operands to which the next operation is applied. Then the last operation is applied to the last two values on the stack.
 
-Нетрудно показать (разбор случаев), что на основании значений для двух операндов из стека, хранимых в структуре `State`, можно однозначно восстановить соответствующие значения для состояния-результата, полученного после применения очередной операции.
+At the same time, when reading *a letter*, a new state is always added to the stack, which is uniquely determined based on whether it is equal to `x` or not. When reading *an operation*, the top two states on the stack are replaced with one common one.
 
-Таким образом, после последовательного чтения регулярного выражения будет получено **конечное состояние**, которое соответствует языку `L`.
+It is easy to show (using case analysis) that based on the values for two operands from the stack stored in the `State` structure, it is possible to unambiguously restore the corresponding values for the result state obtained after applying the next operation.
 
-Для получения ответа достаточно сравнить значение для конечного состояния длины наибольшего префикса, содержащего только символы `x`, с числом из ввода `k`.
+Thus, after sequential reading of the regular expression, the **final state** will be obtained, which corresponds to the language `L`.
 
-## Описание запуска
+To get an answer, it is enough to compare the value for the final state of the length of the longest prefix containing only characters `x` with the number `k` from the input.
+
+## Usage
 
 ```bash
 python3 main.py --regex [REGEX] --symbol [SYMBOL] --number [NUMBER]
@@ -44,14 +46,14 @@ python3 main.py --regex [REGEX] --symbol [SYMBOL] --number [NUMBER]
 
 Где:
 
-- `REGEX` - регулярное выражение, задающее язык `L`
-- `SYMBOL` - символ, по которому ведется поиск
-- `NUMBER` - число вхождений символа `SYMBOL` в префикс слова из `L`
+- `REGEX` - regular expression specifing the language `L`
+- `SYMBOL` - symbol being used to search
+- `NUMBER` - the number of occurrences of the `SYMBOL` character in the prefix of a word from `L`
 
-**Запуск тестов** с информацией о покрытии (необходимый конфиг уже есть в корне репозитория):
+**Run tests** with coverage information (the required configuration file is already in the root of the repository):
 
 ```bash
 pytest
 ```
 
-Кроме того, есть актуальная информация о прохождении тестов, полученная из [Travis-CI](https://travis-ci.org) и подробная информация о покрытии тестами с красивым интерфейсом [Codecov](https://codecov.io/) (доступ через бейджи наверху этого файла).
+In addition, there is up-to-date information on passing tests obtained from [Travis-CI](https://travis-ci.org) and detailed information on test coverage with a beautiful interface [Codecov](https://codecov.io/) (accessed via badges at the top of this file).
